@@ -1,0 +1,45 @@
+server:
+  port: ${MOVIES_API_PORT:5001}
+  servlet:
+    context-path: /movies-api
+jwt:
+  secret: secret
+  token:
+    validity: 10000
+spring:
+  datasource:
+    url: jdbc:h2:mem:award-db
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none # enable for integration testing
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${IAM_OIDC_JWK_ENDPOINT:http://localhost:8081/auth/realms/front-office-public/protocol/openid-connect/certs}
+
+management:
+  metrics:
+    enable:
+      all: true
+      jvm: true
+  endpoint:
+    health:
+      enabled: true
+    httptrace:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, httptrace, info, prometheus, metrics, loggers
+
+csv-file:
+  path: src/main/resources/data/academy_awards.csv
+
+
+logging:
+  level:
+    root: info

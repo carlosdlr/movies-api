@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+
+  movies-api:
+    container_name: movies_api_service
+    environment:
+      DB_URI: jdbc:mysql://$${MYSQL_HOST:my_sqldb}:3306/movies
+    networks:
+      - backbase
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5001:5001'
+    depends_on:
+      - my_sqldb
+    restart: always
+
+  my_sqldb:
+    container_name: movies_api_service_db
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root-secure-passwd
+      - MYSQL_DATABASE=movies
+      - MYSQL_USER=movies_user
+      - MYSQL_PASSWORD=movies_passwd
+    volumes:
+      - ./movies-db/sql_scripts/:/docker-entrypoint-initdb.d/
+    networks:
+      - backbase
+    ports:
+      - '3306:3306'
+networks:
+  backbase:
+    name: backbase-network

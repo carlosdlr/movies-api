@@ -1,0 +1,45 @@
+server:
+  port: ${MOVIES_API_PORT:5001}
+
+spring:
+  application:
+    name: movies-api
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/movies
+    username: movies_user
+    password: movies_passwd
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${IAM_OIDC_JWK_ENDPOINT:http://localhost:8081/auth/realms/front-office-public/protocol/openid-connect/certs}
+
+management:
+  metrics:
+    enable:
+      all: true
+      jvm: true
+  endpoint:
+    health:
+      enabled: true
+    httptrace:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, httptrace, info, prometheus, metrics, loggers
+
+csv-file:
+  path: src/main/resources/data/academy_awards.csv
+
+
+logging:
+  level:
+    org:
+      springframework:
+        security: debug
+    root: info
